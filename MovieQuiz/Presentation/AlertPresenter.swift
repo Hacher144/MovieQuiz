@@ -8,7 +8,7 @@
 import UIKit
 
 class AlertPresenter {
-    func showAlert(ViewController: UIViewController, quiz result: AlertModel) {
+    static func showAlert(viewController: UIViewController, quiz result: AlertModel) {
         let alert = UIAlertController(
             title: result.title,
             message: result.message,
@@ -18,6 +18,6 @@ class AlertPresenter {
         
         alert.addAction(action)
         
-        ViewController.present(alert, animated: true, completion: nil)
+        viewController.present(alert, animated: true, completion: nil)
     }
 }
