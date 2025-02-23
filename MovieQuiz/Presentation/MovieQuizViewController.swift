@@ -28,12 +28,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - QuestionFactoryDelegate
-
+    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
         }
-
+        
         currentQuestion = question
         let viewModel = convert(model: question)
         
@@ -86,12 +86,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                     message: result.text,
                                     buttonText: result.buttonText,
                                     completion: {[weak self] in
-                                                guard let self else { return }
+            guard let self else { return }
             
-                                                self.currentQuestionIndex = 0
-                                                self.correctAnswers = 0
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
             
-                                                questionFactory.requestNextQuestion()})
+            questionFactory.requestNextQuestion()})
         
         AlertPresenter.showAlert(viewController: self, quiz: alertModel)
     }
@@ -111,26 +111,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNextQuestionOrResults() {
-      changeStateButton(isEnabled: true)
-      if currentQuestionIndex == questionsAmount - 1 {
-          statisticService.store(correct: correctAnswers, total: questionsAmount)
-
-          let text = """
+        changeStateButton(isEnabled: true)
+        if currentQuestionIndex == questionsAmount - 1 {
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            
+            let text = """
               Ваш результат: \(correctAnswers)/\(questionsAmount)
               Количество сыграных квизов: \(statisticService.gamesCount)
               Рекорд: \(statisticService.bestGame.correct)/\(questionsAmount) (\(statisticService.bestGame.date.dateTimeString))
               Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
               """
-          let viewModel = QuizResultsViewModel(
-              title: "Этот раунд окончен!",
-              text: text,
-              buttonText: "Сыграть ещё раз")
-          show(quiz: viewModel)
-      } else {
-        currentQuestionIndex += 1
-          
-        self.questionFactory.requestNextQuestion()
-      }
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            show(quiz: viewModel)
+        } else {
+            currentQuestionIndex += 1
+            
+            self.questionFactory.requestNextQuestion()
+        }
     }
 }
 
